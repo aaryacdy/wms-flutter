@@ -1,0 +1,109 @@
+// import 'dart:math';
+
+// import 'package:geolocator/geolocator.dart';
+// import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+// class ABC {
+//    final List<Map<String, double>> serviceLocations;
+//   final LatLng deviceLocation;
+
+//   Tsp({required this.serviceLocations, required this.deviceLocation});
+//   List<LatLng> serviceMarkers = [];
+
+//   double findDistance(LatLng from, LatLng to) {
+//     return Geolocator.distanceBetween(
+//         from.latitude, from.longitude, to.latitude, to.longitude);
+//   }
+
+
+// double recurseTsp(   List<List<double>> graph,
+//     int mask,
+//     int node,
+//     int n,
+//     List<List<double>> dp,
+//     List<List<int>> parents,
+//     List<int> powers,){
+//        if (dp[node][mask] != -1) {
+//       return dp[node][mask];
+//     }
+//      if (mask == (powers[n] - 1)) {
+//       parents[node][mask] = 0;
+//       return dp[node][mask] = graph[node][0];
+//     }
+//     double minDistance = double.infinity;
+//     for (int i = 0; i < n; i++) {
+//       if ((mask & powers[i]) == powers[i]) {
+//         continue;
+//       } else {
+//         double prevDistance = minDistance;
+//         minDistance = min(
+//           minDistance,
+//           recurseTsp(graph, mask | powers[i], i, n, dp, parents, powers) +
+//               graph[node][i],
+//         );
+//         if (minDistance < prevDistance) {
+//           parents[node][mask] = i;
+//         }
+//       }
+//     }
+//     return dp[node][mask] = minDistance;
+
+// }
+
+// List<LatLng> solveTSP() {
+//   List<LatLng> locations = [
+//       deviceLocation,
+//       ...serviceLocations.map((loc) => LatLng(loc['latitude']!, loc['longitude']!)),
+//     ];
+
+//     int count = locations.length;
+//     if (count == 0) {
+//       // Handle the case where no locations are provided
+//       throw ArgumentError('No locations provided to solve TSP');
+//     }
+
+//     List<List<double>> graph =
+//         List.generate(count, (index) => List.filled(count, 0));
+
+//     // Build distance graph
+//     for (int i = 0; i < count; i++) {
+//       for (int j = 0; j < count; j++) {
+//         graph[i][j] = findDistance(locations[i], locations[j]);
+//       }
+//     }
+//    List<int> powers = [];
+//     int temp = 1;
+//     for (int i = 0; i < count; i++) {
+//       powers.add(temp);
+//       temp = temp * 2;
+//     }
+
+//      // Initialize DP and parent tables
+//      List<List<double>> dp =
+//         List.generate(count, (index) => List.filled(powers[count], -1));
+//     List<List<int>> parents =
+//         List.generate(count, (index) => List.filled(powers[count], -1));
+
+//     double answer = recurseTsp(graph, 1, 0, count, dp, parents, powers);
+//     print('Minimum travel distance: $answer');
+
+//     // Reconstruct the path
+//     List<int> path = [];
+//     List<LatLng> plotPath = [];
+//     int startNode = 0, startMask = 1;
+
+//     while (true) {
+//       path.add(startNode);
+//       plotPath.add(serviceMarkers[startNode]);
+//       startNode = parents[startNode][startMask];
+//       startMask = startMask | powers[startNode];
+//       if (startNode == 0) {
+//         path.add(startNode);
+//         plotPath.add(serviceMarkers[startNode]);
+//         break;
+//       }
+//     }
+
+//     return plotPath;
+//   }
+// }

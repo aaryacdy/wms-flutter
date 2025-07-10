@@ -1,0 +1,84 @@
+import 'dart:math';
+
+// import 'package:geolocator/geolocator.dart';
+// import 'package:google_maps_flutter/google_maps_flutter.dart';
+// import 'package:collection/collection.dart';
+
+// class DijkstraImplementation {
+//    final List<Map<String, double>> serviceLocations;
+//   final LatLng deviceLocation;
+
+//   DijkstraImplementation({required this.serviceLocations, required this.deviceLocation});
+
+//    double findDistance(LatLng from, LatLng to) {
+//     return Geolocator.distanceBetween(
+//       from.latitude,
+//       from.longitude,
+//       to.latitude,
+//       to.longitude,
+//     );
+//   }
+
+//   // Dijkstra's Algorithm to find the shortest path from the device location to all service locations
+//   List<LatLng> dijkstraAlgorithm() {
+//     List<LatLng> locations = [
+//       deviceLocation,
+//       ...serviceLocations.map((loc) => LatLng(loc['latitude']!, loc['longitude']!)),
+//     ];
+
+//       int count = locations.length;
+//     List<List<double>> graph = List.generate(count, (index) => List.filled(count, double.infinity));
+//     List<double> distances = List.filled(count, double.infinity);
+//     List<int> previousNodes = List.filled(count, -1);
+//     Set<int> visited = Set();
+
+//     // Build distance graph
+//     for (int i = 0; i < count; i++) {
+//       for (int j = 0; j < count; j++) {
+//         if (i != j) {
+//           graph[i][j] = findDistance(locations[i], locations[j]);
+//           // print('Distance from ${locations[i]} to ${locations[j]}: ${graph[i][j]} meters');
+//         } else {
+//            graph[i][j] = 0; // distance to itself is 0
+//         }
+//       }
+//     }
+
+//     // Initialize distances
+//     distances[0] = 0;
+
+//     // Priority Queue
+//     PriorityQueue<int> priorityQueue = PriorityQueue<int>((a, b) => distances[a].compareTo(distances[b]));
+
+//     priorityQueue.add(0);
+
+//     while (priorityQueue.isNotEmpty) {
+//       int current = priorityQueue.removeFirst();
+//       if (visited.contains(current)) continue;
+//       visited.add(current);
+
+//       for (int neighbor = 0; neighbor < count; neighbor++) {
+//         if (visited.contains(neighbor)) continue;
+//         double newDist = distances[current] + graph[current][neighbor];
+//         if (newDist < distances[neighbor]) {
+//           distances[neighbor] = newDist;
+//           previousNodes[neighbor] = current;
+//           priorityQueue.add(neighbor);
+//         }
+//       }
+//     }
+
+//     // Reconstruct the path
+//     List<LatLng> path = [];
+//     int endNode = count - 1; // Ending at the last node (last service location)
+//     while (endNode != -1) {
+//       path.add(locations[endNode]);
+//       endNode = previousNodes[endNode];
+//     }
+
+//     path = path.reversed.toList(); // Reverse path to start from the device location
+
+//     return path;
+//   }
+
+// }
